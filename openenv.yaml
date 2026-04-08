@@ -3,7 +3,7 @@ version: 1.0.0
 description: "A hybrid E-commerce audit environment for OmniAudit."
 environment:
   type: openenv
-  entrypoint: "server.app:run_server"
+  entrypoint: "server.app:main"
   port: 7860
   runtime: "python:3.10"
 tasks:
