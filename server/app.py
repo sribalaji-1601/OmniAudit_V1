@@ -134,7 +134,7 @@ class OmniAuditHandler(BaseHTTPRequestHandler):
         """Override to reduce log noise"""
         pass
 
-def run_server():
+def main():
     """Start HTTP server"""
     server_address = ('0.0.0.0', 7860)
     httpd = HTTPServer(server_address, OmniAuditHandler)
@@ -159,4 +159,4 @@ def run_server():
         httpd.server_close()
 
 if __name__ == "__main__":
-    run_server()
+    main()
