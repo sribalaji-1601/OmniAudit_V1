@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "omniaudit-gym"
+version = "1.0.0"
+description = "A hybrid E-commerce audit environment for OmniAudit."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "openenv-core>=0.2.0",
+    "pydantic>=2.0.0",
+    "requests>=2.25.0",
+    "openai>=1.0.0"
+]
+
+[project.scripts]
+server = "server.app:run_server"

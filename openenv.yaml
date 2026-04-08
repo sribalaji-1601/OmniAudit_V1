@@ -1,0 +1,24 @@
+name: omniaudit-gym
+version: 1.0.0
+description: "A hybrid E-commerce audit environment for OmniAudit."
+environment:
+  type: openenv
+  entrypoint: "server.app:run_server"
+  port: 7860
+  runtime: "python:3.10"
+tasks:
+  easy:
+    name: "Fix Missing Aria Label"
+    description: "Add missing aria-label to a Buy button"
+    difficulty: easy
+    reward_weight: 0.3
+  medium:
+    name: "Fix Price Mismatch"
+    description: "Resolve price discrepancy between UI and backend"
+    difficulty: medium
+    reward_weight: 0.7
+  hard:
+    name: "Resolve Semantic Conflict"
+    description: "Fix material conflict using secondary specs"
+    difficulty: hard
+    reward_weight: 1.0
