@@ -64,7 +64,11 @@ class OmniAuditHandler(BaseHTTPRequestHandler):
             
             elif parsed_path.path == '/tasks':
                 tasks = env.get_tasks()
-                task_dict = {task.name.lower().replace(" ", "_"): task.model_dump() for task in tasks}
+                task_dict = {
+                    "easy": env.tasks["easy"].model_dump(),
+                    "medium": env.tasks["medium"].model_dump(),
+                    "hard": env.tasks["hard"].model_dump()
+                }
                 self._send_json(task_dict)
             
             elif parsed_path.path == '/grader':
@@ -75,7 +79,12 @@ class OmniAuditHandler(BaseHTTPRequestHandler):
                     "is_complete": state.is_complete,
                     "tasks_completed": state.tasks_completed,
                     "total_steps": state.step_count,
-                    "total_reward": state.total_reward
+                    "total_reward": state.total_reward,
+                    "tasks": {
+                        "easy": env.tasks["easy"].current_score,
+                        "medium": env.tasks["medium"].current_score,
+                        "hard": env.tasks["hard"].current_score
+                    }
                 })
             
             elif parsed_path.path == '/health':
