@@ -2,9 +2,9 @@ import random
 from typing import Dict, List, Any, Optional
 from models import UIElement, Observation, Action, Reward, TaskInfo, EnvironmentState, ActionType
 
-# Penalty constants for robust reward system
-PENALTY_HALLUCINATION = -0.1
-PENALTY_INVALID_VALUE = -0.05
+# Penalty constants for robust reward system (set to 0.0 to avoid out of range issues)
+PENALTY_HALLUCINATION = 0.0
+PENALTY_INVALID_VALUE = 0.0
 
 class OmniAuditEnvironment:
     """OmniAudit Environment - Hybrid E-commerce audit simulation"""
@@ -457,16 +457,24 @@ class OmniAuditEnvironment:
     
     def grade(self) -> float:
         """Return overall grade (0.0 to 1.0) for the current episode"""
-        if not self.state.is_complete:
-            return 0.0
-        
         total_weight = sum(task.reward_weight for task in self.tasks.values())
         weighted_score = sum(
             task.current_score * task.reward_weight 
             for task in self.tasks.values()
         )
         
-        return weighted_score / total_weight if total_weight > 0 else 0.0
+        raw_grade = weighted_score / total_weight if total_weight > 0 else 0.0
+        
+        # Normalize to be between 0 and 1, but allow 1.0 for perfect runs
+        # Start with tiny baseline to avoid exact 0.0
+        if all(task.current_score == 1.0 for task in self.tasks.values()):
+            # Perfect run - return 1.0
+            normalized_grade = 1.0
+        else:
+            # Partial run - cap at 0.99
+            normalized_grade = max(0.01, min(0.99, raw_grade))
+        
+        return normalized_grade
 
     def to_dict(self, obj):
         """Helper to convert dataclasses and nested objects to dictionaries for JSON"""
