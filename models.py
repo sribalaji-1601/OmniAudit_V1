@@ -58,7 +58,7 @@ class TaskInfo(BaseModel):
     description: str
     difficulty: str
     reward_weight: float
-    current_score: float = 0.0
+    current_score: float = 0.01
 
 class EnvironmentState(BaseModel):
     """Current state of the environment"""
